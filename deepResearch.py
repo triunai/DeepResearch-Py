@@ -7,9 +7,7 @@ import json
 # =======================
 
 # todo: replace SERPAPI with Firecrawl(cheaper alternative)
-OPENROUTER_API_KEY = "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" # Replace with your OpenRouter API key
-SERPAPI_API_KEY = "940bfbe4ea75402961f020d703dcd7512d543ff346c9c41dae038c7995952406" # Replace with your SERPAPI API key
-JINA_API_KEY = "jina_be5fabb02d824abc9dfcbed756a814cectn_5OdUDwJAtadJQL2cuo6wyrVm" # Replace with your JINA API key
+# ADD KEYS HERE WHEN TESTING! removed for now FOR GIT
 
 # Endpoints
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
