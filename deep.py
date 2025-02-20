@@ -4,11 +4,8 @@ import json
 import os
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")
-SERPAPI_API_KEY = os.getenv("SERPAPI_API_KEY", "")
-FIRECRAWL_API_KEY = os.getenv("FIRECRAWL_API_KEY", "")
+
+
 
 # Endpoints
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
@@ -22,17 +19,30 @@ DEFAULT_MODEL = "anthropic/claude-3.5-haiku"
 # ============================
 
 async def call_openrouter_async(session, messages, model=DEFAULT_MODEL):
+    """
+    Asynchronously call the OpenRouter chat completion API with the provided messages.
+    Returns the content of the assistant’s reply.
+    """
     headers = {
-        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+        "Authorization": f"Bearer {OPENROUTER_API_KEY}",  # Ensure key is passed here!
         "X-Title": "OpenDeepResearcher, by Matt Shumer",
         "Content-Type": "application/json"
     }
-    payload = {"model": model, "messages": messages}
+
+    # Debugging: Print headers to ensure key is included
+    print("Sending headers:", headers)
+
+    payload = {
+        "model": model,
+        "messages": messages
+    }
+
     try:
         async with session.post(OPENROUTER_URL, headers=headers, json=payload) as resp:
+            print(f"OpenRouter API Response Status: {resp.status}")  # Debugging status code
             if resp.status == 200:
                 result = await resp.json()
-                print("OpenRouter raw response:", result)
+                print("OpenRouter Response:", result)  # Debug full response
                 try:
                     return result['choices'][0]['message']['content']
                 except (KeyError, IndexError) as e:
@@ -45,6 +55,7 @@ async def call_openrouter_async(session, messages, model=DEFAULT_MODEL):
     except Exception as e:
         print("Error calling OpenRouter:", e)
         return None
+
 
 async def generate_search_queries_async(session, user_query):
     prompt = (
