@@ -77,5 +77,7 @@ It’s basically an "AI microscope for the internet."
 ---
 ## 💡 Final Thoughts
 IrisLens isn’t the best, but it’s good enough for now. It’s basically DeepResearch's drunk cousin, but hey, it works. 🎯
-🛠️ Made with sweat & Python.
-🐍 Hack away & improve it!
+
+##### 🛠️ Made with sweat & Python.
+
+##### 🐍 Hack away & improve it!
