@@ -16,9 +16,9 @@ SERPAPI_URL = "https://serpapi.com/search"
 # Model configuration
 DEFAULT_MODEL = "anthropic/claude-3.5-haiku"
 
-# ============================
-# Asynchronous Helper Functions
-# ============================
+# ==============================================
+# Asynchronous Helper Functions for openRouter
+# ================================================
 
 async def call_openrouter_async(session, messages, model=DEFAULT_MODEL):
     """
@@ -59,6 +59,9 @@ async def call_openrouter_async(session, messages, model=DEFAULT_MODEL):
         return None
 
 
+# =============================
+# 🔹 Research Query Generation 🔹
+# =============================
 async def generate_search_queries_async(session, user_query):
     prompt = (
         "You are an expert research assistant. Given the user's query, generate up to four distinct, "
@@ -85,6 +88,9 @@ async def generate_search_queries_async(session, user_query):
             return []
     return []
 
+# =============================
+# 🔹 Performing Search Queries 🔹
+# =============================
 async def perform_search_async(session, query):
     params = {"q": query, "api_key": SERPAPI_API_KEY, "engine": "google"}
     try:
@@ -106,6 +112,9 @@ async def perform_search_async(session, query):
         print("Error performing SERPAPI search:", e)
         return []
 
+# =============================
+# 🔹 Scraping Webpages 🔹
+# =============================
 async def batch_fetch_webpages_async(session, urls):
     """
     Batch scrape multiple URLs using FireCrawl's synchronous batch scrape method.
@@ -135,6 +144,11 @@ async def batch_fetch_webpages_async(session, urls):
         print("Error during batch scraping:", e)
         return {}
 
+
+
+# =============================
+# 🔹 Filtering Useful Pages 🔹
+# =============================
 async def is_page_useful_async(session, user_query, page_text):
     prompt = (
         "You are a critical research evaluator. Given the user's query and the content of a webpage, "
@@ -158,6 +172,10 @@ async def is_page_useful_async(session, user_query, page_text):
                 return "No"
     return "No"
 
+
+# =============================
+# 🔹 Extracting Key Information 🔹
+# =============================
 async def extract_relevant_context_async(session, user_query, search_query, page_text):
     prompt = (
         "You are an expert information extractor. Given the user's query, the search query that led to this page, "
@@ -174,6 +192,9 @@ async def extract_relevant_context_async(session, user_query, search_query, page
         return response.strip()
     return ""
 
+# =============================
+# 🔹 Generating New Search Queries 🔹
+# =============================
 async def get_new_search_queries_async(session, user_query, previous_search_queries, all_contexts):
     context_combined = "\n".join(all_contexts)
     prompt = (
@@ -205,6 +226,9 @@ async def get_new_search_queries_async(session, user_query, previous_search_quer
             return []
     return ""
 
+# =============================
+# 🔹 Generating the Final Report 🔹
+# =============================
 async def generate_final_report_async(session, user_query, all_contexts):
     context_combined = "\n".join(all_contexts)
     prompt = (
@@ -220,9 +244,9 @@ async def generate_final_report_async(session, user_query, all_contexts):
     print("Final report raw response:", report)
     return report
 
-# =========================
-# Main Asynchronous Routine
-# =========================
+# =============================
+# 🔹 Main Research Routine 🔹
+# =============================
 
 async def async_main():
     user_query = input("Enter your research query/topic: ").strip()
