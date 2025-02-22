@@ -6,8 +6,10 @@ from dotenv import load_dotenv
 
 
 
-
-# Endpoints
+# =============================
+# 🔹 Endpoints & Configuration 🔹
+# =============================
+# OpenRouter API (LLM reasoning)
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 SERPAPI_URL = "https://serpapi.com/search"
 
