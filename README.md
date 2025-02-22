@@ -1,5 +1,5 @@
 # IrisLens: Your AI-Powered Research Assistant
-###### : Authored by Khumeren 
+###### : Authored by Khumeren v2
 **🚀 A lightweight, modular, and FireCrawl-powered research assistant built to automate deep web research. Inspired by OpenAI’s DeepResearch, but a shittier, funnier, and cheaper alternative.**
 
 ---
