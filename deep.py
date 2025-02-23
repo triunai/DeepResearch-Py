@@ -5,11 +5,7 @@ import os
 from dotenv import load_dotenv
 
 
-OPENROUTER_API_KEY ="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"
 
-SERPAPI_API_KEY ="940bfbe4ea75402961f020d703dcd7512d543ff346c9c41dae038c7995952406"
-
-FIRECRAWL_API_KEY ="fc-405d3c3a9e754b2cb2bb683486f644ed"
 # =============================
 # 🔹 Endpoints & Configuration 🔹
 # =============================
