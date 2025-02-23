@@ -5,7 +5,11 @@ import os
 from dotenv import load_dotenv
 
 
+OPENROUTER_API_KEY ="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"
 
+SERPAPI_API_KEY ="940bfbe4ea75402961f020d703dcd7512d543ff346c9c41dae038c7995952406"
+
+FIRECRAWL_API_KEY ="fc-405d3c3a9e754b2cb2bb683486f644ed"
 # =============================
 # 🔹 Endpoints & Configuration 🔹
 # =============================
@@ -14,7 +18,7 @@ OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 SERPAPI_URL = "https://serpapi.com/search"
 
 # Model configuration
-DEFAULT_MODEL = "anthropic/claude-3.5-haiku"
+DEFAULT_MODEL = "qwen/qwen-max"
 
 # ==============================================
 # Asynchronous Helper Functions for openRouter
@@ -69,7 +73,7 @@ async def generate_search_queries_async(session, user_query):
         "Return only a Python list of strings, for example: ['query1', 'query2', 'query3']." 
     )
     messages = [
-        {"role": "system", "content": "You are a helpful and precise research assistant."},
+        {"role": "system", "content": "You are a meticulous and precise research assistant."},
         {"role": "user", "content": f"User Query: {user_query}\n\n{prompt}"}
     ]
     response = await call_openrouter_async(session, messages)
@@ -151,9 +155,9 @@ async def batch_fetch_webpages_async(session, urls):
 # =============================
 async def is_page_useful_async(session, user_query, page_text):
     prompt = (
-        "You are a critical research evaluator. Given the user's query and the content of a webpage, "
+        "You are a critical and meticulous research evaluator. Given the user's query and the content of a webpage, "
         "determine if the webpage contains information relevant and useful for addressing the query. "
-        "Respond with exactly one word: 'Yes' if the page is useful, or 'No' if it is not. Do not include any extra text."
+        "Respond with exactly one word: 'Yes' if the page is useful, or 'No' if it is not. Do not include any extra text or fluff."
     )
     messages = [
         {"role": "system", "content": "You are a strict and concise evaluator of research relevance."},
@@ -180,7 +184,7 @@ async def extract_relevant_context_async(session, user_query, search_query, page
     prompt = (
         "You are an expert information extractor. Given the user's query, the search query that led to this page, "
         "and the webpage content, extract all pieces of information that are relevant to answering the user's query. "
-        "Return only the relevant context as plain text without commentary."
+        "Return only the relevant context as plain text without commentary.Do not return your own personal commentary, only return the plain text content of the page"
     )
     messages = [
         {"role": "system", "content": "You are an expert in extracting and summarizing relevant information."},
@@ -287,6 +291,8 @@ async def async_main():
             # --- BATCH SCRAPE: Fetch all pages at once ---
             urls = list(unique_links.keys())
             batch_pages = await batch_fetch_webpages_async(session, urls)
+            
+            # iterate through every page to check usefulness 
             for url in urls:
                 page_text = batch_pages.get(url, "")
                 print(f"Fetched content from: {url} (length: {len(page_text)})")
